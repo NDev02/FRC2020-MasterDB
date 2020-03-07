@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            --blue: rgb(190, 190, 255);
+            --red: rgb(255, 198, 198);
+        }
+        table {
+            width: 100%;
+        }
+        .table-head td{
+            background: white!important;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        tr :nth-child(2) {
+            background:var(--blue);
+        }
+        tr :nth-child(3) {
+            background:var(--blue);
+        }
+        tr :nth-child(4) {
+            background:var(--blue);
+        }
+        tr :nth-child(5) {
+            background:var(--blue);
+        }
+        tr :nth-child(6) {
+            background:var(--blue);
+        }
+        tr :nth-child(7) {
+            background:var(--blue);
+        }
+        tr :nth-child(8) {
+            background:var(--blue);
+        }
+        tr :nth-child(9) {
+            background:var(--blue);
+        }
+        tr :nth-child(10) {
+            background:var(--red);
+        }
+        tr :nth-child(11) {
+            background:var(--red);
+        }
+        tr :nth-child(12) {
+            background:var(--red);
+        }
+        tr :nth-child(13) {
+            background:var(--red);
+        }
+        tr :nth-child(14) {
+            background:var(--red);
+        }
+        tr :nth-child(15) {
+            background:var(--red);
+        }
+        tr :nth-child(16) {
+            background:var(--red);
+        }
+        tr :nth-child(17) {
+            background:var(--red);
+        }
+    </style>
+    <script>
+
+        let folder = "Week 1";
+
+        window.onload = async function() {
+
+            let res = await fetch("./" + folder + "/events.json");
+            let eventKeys = await res.json();
+
+            let table = document.querySelector("#table");
+            
+            for(let eventKey of eventKeys) {
+
+                let matchDataRes = await fetch(`./${folder}/${eventKey}.json`);
+                let matchData = await matchDataRes.json();
+
+                let headRow = Object.keys(matchData[0]);
+                headRow[0] = eventKey;
+                let header = trFromArray(headRow);
+                header.className = "table-head";
+                table.appendChild(header);
+                
+                for(let match of matchData) {
+
+                    table.appendChild(trFromArray(Object.values(match), true));
+
+                }
+
+            }
+
+        }
+
+        function trFromArray(array, checkValues) {
+
+            let tr = document.createElement("tr");
+            let i = 0;
+
+            for(let item of array) {
+
+                let td = document.createElement("td");
+                td.appendChild(document.createTextNode(item));
+                
+                if(checkValues) {
+
+                    if((i == 4 || i == 12) && item >= 29) {
+                    
+                        td.style.background = "yellow";
+
+                    }
+
+                    if((i == 5 || i == 13) && item > 0) {
+                    
+                        td.style.background = "yellow";
+
+                    }
+
+                    if((i == 6 || i == 14) && item >= 65) {
+                    
+                        td.style.background = "yellow";
+
+                    }
+
+                }
+
+                tr.appendChild(td);
+                i++;
+
+            }
+
+            return tr;
+
+        }
+
+    </script>
+</head>
+<body>
+    <table id="table">
+    </table>
+</body>
+</html>
