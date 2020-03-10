@@ -3,7 +3,7 @@ const fs = require("fs");
 const key = "XVapXeXpAc91fcLyT3tQrIzxt7GjEqBQQpiHANLVP8RHSLhOTVUTPnyKU4GX8n4b";
 const url = "https://www.thebluealliance.com/api/v3";
 
-let folder = "Week 2";
+let folder = "Week 1";
 
 const sheetID = "1jng8uPY0xKBMcnsEASr5Azc5FwPSj1xraSnmszOE9IA";
 
@@ -13,10 +13,10 @@ const doc = new GoogleSpreadsheet(sheetID);
 
 async function start() {
 
-    await doc.useServiceAccountAuth(require('./creds.json'));
-    await doc.loadInfo();
+    // await doc.useServiceAccountAuth(require('./creds.json'));
+    // await doc.loadInfo();
     
-    populateSheets(2, true);
+    populateSheets(1, true);
 
 }
 
@@ -76,14 +76,24 @@ async function populateSheets(week, localStore) {
             let rows = [];
 
             for(let match of matches) {
-         
+
                 let matchNumber = match.comp_level + match.match_number;
 
                 let blue = match.alliances.blue.team_keys;
                 let red = match.alliances.red.team_keys;
 
+                if(match.score_breakdown == null) {
+                    
+                    console.log(`Need Data for ${event.key}: ${match.comp_level}${match.match_number}`);
+                    continue;
+
+                }
+
                 let powerCellsBlue = match.score_breakdown.blue.autoCellsOuter + match.score_breakdown.blue.autoCellsInner + match.score_breakdown.blue.autoCellsBottom + match.score_breakdown.blue.teleopCellsOuter + match.score_breakdown.blue.teleopCellsInner + match.score_breakdown.blue.teleopCellsBottom;
                 let powerCellsRed = match.score_breakdown.red.autoCellsOuter + match.score_breakdown.red.autoCellsInner + match.score_breakdown.red.autoCellsBottom + match.score_breakdown.red.teleopCellsOuter + match.score_breakdown.red.teleopCellsInner + match.score_breakdown.red.teleopCellsBottom;
+
+                let autoPowerCellsBlue = match.score_breakdown.blue.autoCellsOuter + match.score_breakdown.blue.autoCellsInner + match.score_breakdown.blue.autoCellsBottom;
+                let autoPowerCellsRed = match.score_breakdown.red.autoCellsOuter + match.score_breakdown.red.autoCellsInner + match.score_breakdown.red.autoCellsBottom;
 
                 let controlPanelBlue = match.score_breakdown.blue.controlPanelPoints;
                 let controlPanelRed = match.score_breakdown.red.controlPanelPoints;
@@ -103,6 +113,7 @@ async function populateSheets(week, localStore) {
                     "Blue 2": blue[1].substring(3), 
                     "Blue 3": blue[2].substring(3), 
                     "Power Cell Count Blue": powerCellsBlue,	
+                    "Auto Power Cell Count Blue": autoPowerCellsBlue, 
                     "Control Panel Points Blue": controlPanelBlue, 
                     "End Game Points Blue": climbBlue,
                     "Foul Blue": foulBlue,
@@ -111,6 +122,7 @@ async function populateSheets(week, localStore) {
                     "Red 2": red[1].substring(3), 
                     "Red 3": red[2].substring(3), 
                     "Power Cell Count Red": powerCellsRed, 
+                    "Auto Power Cell Count Red": autoPowerCellsRed, 
                     "Control Panel Points Red": controlPanelRed,
                     "End Game Points Red": climbRed,
                     "Foul Red": foulRed,

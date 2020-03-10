@@ -45,7 +45,7 @@
             background:var(--blue);
         }
         tr :nth-child(10) {
-            background:var(--red);
+            background:var(--blue);
         }
         tr :nth-child(11) {
             background:var(--red);
@@ -68,10 +68,16 @@
         tr :nth-child(17) {
             background:var(--red);
         }
+        tr :nth-child(18) {
+            background:var(--red);
+        }
+        tr :nth-child(19) {
+            background:var(--red);
+        }
     </style>
     <script>
 
-        let folder = "Week 1";
+        let folder = "Week 2";
 
         window.onload = async function() {
 
@@ -84,6 +90,13 @@
 
                 let matchDataRes = await fetch(`./${folder}/${eventKey}.json`);
                 let matchData = await matchDataRes.json();
+
+                if(matchData[0] == null) {
+                
+                    console.log(eventKey);
+                    continue;
+                
+                }
 
                 let headRow = Object.keys(matchData[0]);
                 headRow[0] = eventKey;
@@ -113,19 +126,19 @@
                 
                 if(checkValues) {
 
-                    if((i == 4 || i == 12) && item >= 29) {
+                    if((i == 4 || i == 13) && item >= 29) {
                     
                         td.style.background = "yellow";
 
                     }
 
-                    if((i == 5 || i == 13) && item > 0) {
+                    if((i == 6 || i == 15) && item > 0) {
                     
                         td.style.background = "yellow";
 
                     }
 
-                    if((i == 6 || i == 14) && item >= 65) {
+                    if((i == 7 || i == 16) && item >= 65) {
                     
                         td.style.background = "yellow";
 
